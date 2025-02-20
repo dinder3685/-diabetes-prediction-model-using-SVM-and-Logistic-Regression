@@ -1,38 +1,79 @@
-# mask-detection_ML
+# Diabetes Prediction using SVM and Logistic Regression
 
+## Overview
+This project is a machine learning-based diabetes prediction system using the **PIMA Indians Diabetes Dataset**. It employs **Support Vector Machines (SVM)** and **Logistic Regression** to classify whether a person has diabetes based on medical attributes.
 
-Mask Detection using Deep Learning
+## Dataset
+The dataset contains multiple medical predictor variables (features) and one target variable:
+- **Features:** Pregnancies, Glucose, Blood Pressure, Skin Thickness, Insulin, BMI, DiabetesPedigreeFunction, Age.
+- **Target:** 1 (Diabetic) or 0 (Non-Diabetic).
 
-Overview
+## Requirements
+Install the required dependencies using:
+```bash
+pip install -r requirements.txt
+```
+### Dependencies:
+- `pandas`
+- `numpy`
+- `sklearn`
+- `pickle`
 
-This project is a mask detection system that uses deep learning to identify whether a person is wearing a mask or not. It is trained on a large dataset of images and can accurately classify individuals into three categories:
+## Model Training
+1. Load the dataset into a Pandas DataFrame.
+2. Preprocess the data by handling missing values and scaling features using `StandardScaler`.
+3. Split the data into training and testing sets using `train_test_split`.
+4. Train the model using **SVM** and **Logistic Regression**.
+5. Evaluate the model using accuracy scores and classification reports.
 
-With Mask
+## Usage
+### Training the Model
+Run the following script to train the model:
+```bash
+python train.py
+```
+### Predicting Diabetes
+To predict whether a person has diabetes:
+```python
+import pickle
+import numpy as np
+from sklearn.preprocessing import StandardScaler
 
-Without Mask
+# Load the trained model
+model = pickle.load(open("diabetes_model.pkl", "rb"))
+scaler = pickle.load(open("scaler.pkl", "rb"))
 
-Incorrectly Worn Mask
+def is_diabetic(features):
+    features = np.array(features).reshape(1, -1)
+    scaled_features = scaler.transform(features)
+    prediction = model.predict(scaled_features)
+    return "Diabetic" if prediction[0] == 1 else "Non-Diabetic"
 
-Features
+# Example usage
+features = [2, 120, 70, 30, 80, 25.0, 0.5, 45]  # Sample input
+print(is_diabetic(features))
+```
 
-Uses a deep learning model (CNN-based) for accurate mask detection.
+## Saving & Loading the Model
+To save the trained model:
+```python
+pickle.dump(model, open("diabetes_model.pkl", "wb"))
+pickle.dump(scaler, open("scaler.pkl", "wb"))
+```
+To load and use the model:
+```python
+model = pickle.load(open("diabetes_model.pkl", "rb"))
+scaler = pickle.load(open("scaler.pkl", "rb"))
+```
 
-Trained on a large dataset to improve performance.
+## Future Improvements
+- Implement a web-based UI using Flask or FastAPI.
+- Enhance model performance with feature engineering and hyperparameter tuning.
+- Integrate deep learning models like Neural Networks.
 
-Real-time detection using OpenCV.
+## License
+This project is open-source and available under the MIT License.
 
-Can be integrated with security systems for automatic compliance monitoring.
+## Author
+Ahmed
 
-Dataset
-
-The model is trained on a dataset consisting of thousands of labeled images with different mask-wearing conditions. The dataset includes diverse lighting conditions, angles, and backgrounds to enhance robustness.
-
-Technologies Used
-
-Python
-
-TensorFlow/Keras
-
-OpenCV (for real-time detection)
-
-Matplotlib & NumPy (for data processing and visualization)
